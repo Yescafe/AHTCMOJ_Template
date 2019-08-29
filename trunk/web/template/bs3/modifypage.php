@@ -42,11 +42,11 @@
           <div class="col-sm-4"><input name="opassword" class="form-control" placeholder="<?php echo $MSG_PASSWORD?>*" type="password"></div>
         </div>
         <div class="form-group">
-          <label class="col-sm-4 control-label"><?php echo "New ".$MSG_PASSWORD?></label>
+          <label class="col-sm-4 control-label"><?php echo "新".$MSG_PASSWORD?></label>
           <div class="col-sm-4"><input name="npassword" class="form-control" type="password"></div>
         </div>
         <div class="form-group">
-          <label class="col-sm-4 control-label"><?php echo "New ".$MSG_REPEAT_PASSWORD?></label>
+          <label class="col-sm-4 control-label"><?php echo $MSG_REPEAT_PASSWORD?></label>
           <div class="col-sm-4"><input name="rptpassword" class="form-control" type="password"></div>
         </div>
         <div class="form-group">

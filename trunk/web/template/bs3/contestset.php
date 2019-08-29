@@ -46,10 +46,10 @@ for ($i=$start;$i<=$end;$i++){
 	<?php echo $MSG_SEARCH;?>
 	<input name=keyword type=text >
 	<input type=submit>
-</form>ServerTime:<span id=nowdate></span>
+</form>竞赛时间以服务器时间为准:<span id=nowdate></span>
 <table class='table table-striped' width=90%>
 <thead>
-<tr class=toprow align=center><td width=10%>ID<td width=50%>Name<td width=30%>Status<td width=10%>Private<td>Creator</tr>
+<tr class=toprow align=center><td width=10%>竞赛编号<td width=50%>竞赛名称<td width=30%>状态<td width=10%>开放性<td>创建者</tr>
 </thead>
 <tbody align='center'>
 <?php
