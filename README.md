@@ -1,4 +1,21 @@
-hustoj -- 流行的OJ系统，跨平台、易安装、有题库。
+## AHTCM Online Judge Template   
+安徽中医药大学在线判题平台的后端模板, 由安徽中医药大学.医药信息工程学院.程序设计实验室基于[HUSTOJ](https://github.com/zhblue/hustoj)项目进行二次开发, 并完全开源.   
+
+感谢原项目开发者提供的帮助.   
+
+目前的开发人员有, Github账号:   
+[Ivan Chien](https://github.com/Yescafe)  (本仓库的位置)  
+[Cube..](https://github.com/Cube-Wang)  
+[UVMars](https://github.com/UVMars)  
+[riying](https://github.com/riying)  
+ 
+在线平台位置:    
+[http://101.132.169.186/](http://101.132.169.186/)  
+
+
+以下为原README.md的内容.  
+
+hustoj -- 流行的OJ系统，跨平台、易安装、有题库。  
 ======
 
 版权说明
