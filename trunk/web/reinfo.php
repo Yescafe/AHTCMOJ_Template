@@ -60,7 +60,7 @@ if ( isset($_SESSION[$OJ_NAME.'_'.'source_browser'])||
 	
 }else{
 	
-	$view_errors= "I am sorry, You could not view this message!";
+	$view_errors= "对不起，您无法查看此页面。";
 	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);
 	
