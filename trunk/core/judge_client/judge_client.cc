@@ -186,8 +186,9 @@ static int py2=1; // caution: py2=1 means default using py3
 MYSQL *conn;
 #endif
 
-static char lang_ext[21][8] = {"c", "cc", "pas", "java", "rb", "sh", "py",
-			       "php", "pl", "cs", "m", "bas", "scm", "c", "cc", "lua", "js", "go","sql","f95","m"};
+static char lang_ext[22][8] = {"c", "cc", "pas", "java", "rb", "sh", "py",
+			       "php", "pl", "cs", "m", "bas", "scm", "c", "cc", "lua", "js", "go","sql","f95","m",
+				   "rs"};
 //static char buf[BUFFER_SIZE];
 void print_arm_regs(long long unsigned int *d){
 	for(int i=0;i<32;i++){
@@ -377,6 +378,13 @@ void init_syscalls_limits(int lang)
 	{ //go
 		for (i = 0; i == 0 || LANG_MV[i]; i++)
 			call_counter[LANG_MV[i]] = HOJ_MAX_LIMIT;
+	}
+	else if (lang == 21)
+	{ // Rust
+		for (i = 0; i == 0 || LANG_RUSTV[i]; i++)
+		{
+			call_counter[LANG_RUSTV[i]] = HOJ_MAX_LIMIT;
+		}
 	}
 #ifdef __aarch64__
 	if (lang==3)call_counter[220]= 100;
@@ -1212,6 +1220,7 @@ int compile(int lang, char *work_dir)
 	//const char * CP_JS[] = { "js24","-c", "Main.js", NULL };
 	const char *CP_GO[] = {"go", "build", "-o", "Main", "Main.go", NULL};
 	const char *CP_FORTRAN[] = {"f95", "-static", "-o", "Main", "Main.f95", NULL};
+	const char *CP_RUST[] = {"rustc", "Main.rs", NULL};
 
 	char javac_buf[7][32];
 	char *CP_J[7];
@@ -1369,6 +1378,9 @@ int compile(int lang, char *work_dir)
 			break;
 		case 19:
 			execvp(CP_FORTRAN[0], (char *const *)CP_FORTRAN);
+			break;
+		case 21:
+			execvp(CP_RUST[0], (char *const *)CP_RUST);
 			break;
 		default:
 			printf("nothing to do!\n");
@@ -2172,12 +2184,12 @@ void run_solution(int &lang, char *work_dir, int &time_lmt, int &usedtime,
 	}else{
 		freopen("data.in", "r", stdin);
 	}
-	freopen("user.out", "w", stdout);
+	freopen("user.out", "w+", stdout);
 	freopen("error.out", "a+", stderr);
 	// trace me
 	ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 	// run me
-	if (lang != 3 && lang!=20
+	if (lang != 3 && lang!=20 && lang != 21
 #ifdef __mips__
 //		&& lang != 6
 #endif			
@@ -2242,7 +2254,7 @@ void run_solution(int &lang, char *work_dir, int &time_lmt, int &usedtime,
 	// set the memory
 	LIM.rlim_cur = STD_MB * mem_lmt / 2 * 3;
 	LIM.rlim_max = STD_MB * mem_lmt * 2;
-	if (lang < 3 || lang == 10 || lang == 13 || lang == 14 || lang == 17)
+	if (lang < 3 || lang == 10 || lang == 13 || lang == 14 || lang == 17 || lang == 21)
 		setrlimit(RLIMIT_AS, &LIM);
 
 	switch (lang)
@@ -2256,6 +2268,7 @@ void run_solution(int &lang, char *work_dir, int &time_lmt, int &usedtime,
 	case 14:
 	case 17:
 	case 19:
+	case 21: // Rust
 		execl("./Main", "./Main", (char *)NULL);
 		break;
 	case 3:
@@ -2976,6 +2989,10 @@ int main(int argc, char **argv)
 
 	get_solution(solution_id, work_dir, lang);
 
+	// Rust is special
+	if (lang == 21) {
+		mem_lmt += java_memory_bonus;
+	}
 	//java is lucky
 	if (lang >= 3 && lang != 10 && lang != 13 && lang != 14 && lang != 17)
 	{ //ObjectivC Clang Clang++ Go not VM or Script

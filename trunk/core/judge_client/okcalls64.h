@@ -129,3 +129,9 @@ int LANG_SQLV[CALL_ARRAY_SIZE]={0,1,2,3,4,5,8,9,10,12,13,14,16,21,41,42,59,64,72
 //fortran
 int LANG_FV[CALL_ARRAY_SIZE]={1,5,12,13,21,59,63,89,158,231,0};
 int LANG_MV[CALL_ARRAY_SIZE]={0,1,3,4,5,6,7,8,9,10,11,12,13,14,16,20,21,39,41,42,45,48,52,56,59,63,72,78,79,89,96,102,158,202,204,218,231,257,273,302,318,0};
+// Rust
+int LANG_RUSTV[CALL_ARRAY_SIZE] = {0,1,2,3,5,8,9,10,11,12,13,14,20,21,39,56,59,63,89,99,158,186,218,231,234,257,268,273,275,292,511,302,7,131,204,
+        SYS_read, SYS_write, SYS_mprotect, SYS_munmap, SYS_brk, SYS_arch_prctl, SYS_pread64, SYS_open, SYS_writev,
+        SYS_time, SYS_futex, SYS_set_thread_area, SYS_access, SYS_clock_gettime, SYS_exit_group, SYS_mq_open,
+        SYS_ioprio_get, SYS_unshare, SYS_set_robust_list, SYS_splice, SYS_close, SYS_stat, SYS_fstat, SYS_execve,
+        SYS_uname, SYS_lseek, SYS_readlink, SYS_mmap, SYS_sysinfo, 0 };
