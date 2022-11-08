@@ -186,9 +186,9 @@ static int py2=1; // caution: py2=1 means default using py3
 MYSQL *conn;
 #endif
 
-static char lang_ext[22][8] = {"c", "cc", "pas", "java", "rb", "sh", "py",
+static char lang_ext[23][8] = {"c", "cc", "pas", "java", "rb", "sh", "py",
 			       "php", "pl", "cs", "m", "bas", "scm", "c", "cc", "lua", "js", "go","sql","f95","m",
-				   "rs"};
+				   "rs", "hs"};
 //static char buf[BUFFER_SIZE];
 void print_arm_regs(long long unsigned int *d){
 	for(int i=0;i<32;i++){
@@ -384,6 +384,13 @@ void init_syscalls_limits(int lang)
 		for (i = 0; i == 0 || LANG_RUSTV[i]; i++)
 		{
 			call_counter[LANG_RUSTV[i]] = HOJ_MAX_LIMIT;
+		}
+	}
+	else if (lang == 22)
+	{ // Haskell
+		for (i = 0; i == 0 || LANG_HSV[i]; i++)
+		{
+			call_counter[LANG_HSV[i]] = HOJ_MAX_LIMIT;
 		}
 	}
 #ifdef __aarch64__
@@ -1221,6 +1228,7 @@ int compile(int lang, char *work_dir)
 	const char *CP_GO[] = {"go", "build", "-o", "Main", "Main.go", NULL};
 	const char *CP_FORTRAN[] = {"f95", "-static", "-o", "Main", "Main.f95", NULL};
 	const char *CP_RUST[] = {"rustc", "Main.rs", NULL};
+	const char *CP_HASKELL[] = {"ghc", "Main.hs", NULL};
 
 	char javac_buf[7][32];
 	char *CP_J[7];
@@ -1381,6 +1389,9 @@ int compile(int lang, char *work_dir)
 			break;
 		case 21:
 			execvp(CP_RUST[0], (char *const *)CP_RUST);
+			break;
+		case 22:
+			execvp(CP_HASKELL[0], (char *const *)CP_HASKELL);
 			break;
 		default:
 			printf("nothing to do!\n");
@@ -2189,7 +2200,7 @@ void run_solution(int &lang, char *work_dir, int &time_lmt, int &usedtime,
 	// trace me
 	ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 	// run me
-	if (lang != 3 && lang!=20 && lang != 21
+	if (lang != 3 && lang!=20 && lang != 21 && lang != 22
 #ifdef __mips__
 //		&& lang != 6
 #endif			
@@ -2269,6 +2280,7 @@ void run_solution(int &lang, char *work_dir, int &time_lmt, int &usedtime,
 	case 17:
 	case 19:
 	case 21: // Rust
+	case 22: // Haskell
 		execl("./Main", "./Main", (char *)NULL);
 		break;
 	case 3:
@@ -2989,12 +3001,12 @@ int main(int argc, char **argv)
 
 	get_solution(solution_id, work_dir, lang);
 
-	// Rust is special
-	if (lang == 21) {
+	// Rust & Haskell is special
+	if (lang == 21 || lang == 22) {
 		mem_lmt += java_memory_bonus;
 	}
 	//java is lucky
-	if (lang >= 3 && lang != 10 && lang != 13 && lang != 14 && lang != 17)
+	else if (lang >= 3 && lang != 10 && lang != 13 && lang != 14 && lang != 17)
 	{ //ObjectivC Clang Clang++ Go not VM or Script
 		// the limit for java
 		time_lmt = time_lmt + java_time_bonus;
