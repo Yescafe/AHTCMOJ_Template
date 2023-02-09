@@ -1199,10 +1199,11 @@ int compile(int lang, char *work_dir)
 {
 	int pid;
 
-	const char *CP_C[] = {"gcc", "Main.c", "-o", "Main", "-O2", "-fmax-errors=10", "-Wall",
-						  "-lm", "--static", "-std=c99", "-DONLINE_JUDGE", NULL};
-	const char *CP_X[] = {"g++", "-fno-asm", "-fmax-errors=10", "-Wall",
-						  "-lm", "--static", "-std=c++11", "-DONLINE_JUDGE", "-o", "Main", "Main.cc", NULL};
+	// Use gcc13: https://jwakely.github.io/pkg-gcc-latest/
+	const char *CP_C[] = {"/opt/gcc-latest/bin/gcc", "Main.c", "-o", "Main", "-O2", "-fmax-errors=10", "-Wall",
+						  "-lm", "--static", "-std=c11", "-DONLINE_JUDGE", NULL};
+	const char *CP_X[] = {"/opt/gcc-latest/bin/g++", "-fno-asm", "-fmax-errors=10", "-Wall",
+						  "-lm", "--static", "-std=c++20", "-DONLINE_JUDGE", "-o", "Main", "Main.cc", NULL};
 	const char *CP_P[] =
 		{"fpc", "Main.pas", "-Cs32000000", "-Sh", "-O2", "-Co", "-Ct", "-Ci", NULL};
 	//      const char * CP_J[] = { "javac", "-J-Xms32m", "-J-Xmx256m","-encoding","UTF-8", "Main.java",NULL };
@@ -1251,6 +1252,8 @@ int compile(int lang, char *work_dir)
 		int cpu = 6;
 		if (lang == 3)
 			cpu = 30;
+		if (lang == 1)  // Loosen for C++20 use bits/stdc++.h
+			cpu = 15;
 		LIM.rlim_max = cpu;
 		LIM.rlim_cur = cpu;
 		setrlimit(RLIMIT_CPU, &LIM);
